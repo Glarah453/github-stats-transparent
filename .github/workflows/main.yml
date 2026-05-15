@@ -10,6 +10,9 @@ on:
     - cron: "0 0 * * *"
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 # A workflow run is made up of one or more jobs that can run sequentially or in
 # parallel
 jobs:
@@ -18,10 +21,12 @@ jobs:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
-    # Sequence of tasks that will be executed as part of the job
+    # Sequence of tasks will be executed as part of the job
     steps:
     # Checks-out repository under $GITHUB_WORKSPACE, so the job can access it
     - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
 
     # Run using Python 3.8 for consistency and aiohttp
     - name: Set up Python 3.8
@@ -38,8 +43,8 @@ jobs:
         key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
         restore-keys: |
           ${{ runner.os }}-pip-
-    
-        
+     
+         
     # Install dependencies with `pip`
     - name: Install requirements
       run: |
